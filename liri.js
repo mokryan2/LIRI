@@ -58,6 +58,29 @@ function spotifyThis() {
     });
 };
 
+function doWhatItSays() {
+    fs.readFile("random.txt", "utf8", (err, data) => {
+        if (err) {
+            console.log(error)
+        }
+        else {
+            spotify.search({ type: 'track', query: data, limit: 1 }, function (err, data) {
+                if (err) {
+                    return console.log('Error occurred: ' + err);
+                }
+                else {
+                    console.log("=================================================================");
+                    console.log(
+                        "Artist's Name: " + data.tracks.items[0].album.artists[0].name +
+                        "\nAlbum Name: " + data.tracks.items[0].album.name +
+                        "\nSong Name: " + data.tracks.items[0].name +
+                        "\nSong Url: " + data.tracks.items[0].external_urls.spotify);
+                    console.log("=================================================================");
+                }
+            });
+        }
+    });
+};
 
 switch (process.argv[2]) {
     // OMDB
@@ -66,5 +89,8 @@ switch (process.argv[2]) {
         break;
     case "spotify-this-song":
         spotifyThis();
+        break;
+    case "do-what-it-says":
+        doWhatItSays();
         break;
 };
