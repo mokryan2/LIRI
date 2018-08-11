@@ -18,7 +18,7 @@ function movie() {
 
     request(queryURL, (error, response, body) => {
         if (!error && response.statusCode === 200) {
-            console.log("===================================");
+            console.log("=====================================================================================================");
             console.log(
                 "Title: " + JSON.parse(body).Title +
                 "\nRelease Year:" + JSON.parse(body).Released +
@@ -28,8 +28,7 @@ function movie() {
                 "\nLanguage: " + JSON.parse(body).Language +
                 "\nPlot: " + JSON.parse(body).Plot +
                 "\nActors: " + JSON.parse(body).Actors);
-            console.log("===================================");
-
+            console.log("=====================================================================================================");
         };
     });
 };
@@ -82,6 +81,16 @@ function doWhatItSays() {
     });
 };
 
+//I was unable to actually do this part and figure out the portion b/c i'm still waiting for my app aproval from twitter...
+function tweet() {
+    var params = { screen_name: 'nodejs' };
+    client.get('statuses/user_timeline', params, function (error, tweets, response) {
+        if (!error) {
+            console.log(tweets);
+        }
+    });
+}
+
 switch (process.argv[2]) {
     // OMDB
     case "movie-this":
@@ -94,6 +103,10 @@ switch (process.argv[2]) {
     //DWIS
     case "do-what-it-says":
         doWhatItSays();
+        break;
+    // Twitter
+    case "my-tweets":
+        tweet();
         break;
 };
 
