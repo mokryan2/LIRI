@@ -4,6 +4,8 @@ const Twitter = require('twitter');
 const keys = require("./keys.js")
 const request = require("request");
 const Spotify = require("node-spotify-api");
+var spotify = new Spotify(keys.spotify);
+var client = new Twitter(keys.twitter);
 
 function movie() {
     if (process.argv[3] === undefined) {
@@ -32,10 +34,37 @@ function movie() {
     });
 };
 
-switch (process.argv[2]){
+function spotifyThis() {
+    query = "";
+    if (process.argv[3] === undefined) {
+        query = "The Sign";
+    }
+    else {
+        query = process.argv[3];
+    }
+    spotify.search({ type: 'track', query: query, limit: 1 }, function (err, data) {
+        if (err) {
+            return console.log('Error occurred: ' + err);
+        }
+        else {
+            console.log("=================================================================");
+            console.log(
+                "Artist's Name: " + data.tracks.items[0].album.artists[0].name +
+                "\nAlbum Name: " + data.tracks.items[0].album.name +
+                "\nSong Name: " + data.tracks.items[0].name +
+                "\nSong Url: " + data.tracks.items[0].external_urls.spotify);
+            console.log("=================================================================");
+        }
+    });
+};
+
+
+switch (process.argv[2]) {
     // OMDB
     case "movie-this":
         movie();
         break;
-    
+    case "spotify-this-song":
+        spotifyThis();
+        break;
 };
