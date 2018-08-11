@@ -30,7 +30,7 @@ function movie() {
                 "\nActors: " + JSON.parse(body).Actors);
             console.log("===================================");
 
-        }
+        };
     });
 };
 
@@ -42,7 +42,7 @@ function spotifyThis() {
     else {
         query = process.argv[3];
     }
-    spotify.search({ type: 'track', query: query, limit: 1 }, function (err, data) {
+    spotify.search({ type: 'track', query: query, limit: 1 }, (err, data) => {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
@@ -54,17 +54,17 @@ function spotifyThis() {
                 "\nSong Name: " + data.tracks.items[0].name +
                 "\nSong Url: " + data.tracks.items[0].external_urls.spotify);
             console.log("=================================================================");
-        }
+        };
     });
 };
 
 function doWhatItSays() {
     fs.readFile("random.txt", "utf8", (err, data) => {
         if (err) {
-            console.log(error)
+            throw error;
         }
         else {
-            spotify.search({ type: 'track', query: data, limit: 1 }, function (err, data) {
+            spotify.search({ type: 'track', query: data, limit: 1 }, (err, data) => {
                 if (err) {
                     return console.log('Error occurred: ' + err);
                 }
@@ -76,9 +76,9 @@ function doWhatItSays() {
                         "\nSong Name: " + data.tracks.items[0].name +
                         "\nSong Url: " + data.tracks.items[0].external_urls.spotify);
                     console.log("=================================================================");
-                }
+                };
             });
-        }
+        };
     });
 };
 
@@ -87,10 +87,19 @@ switch (process.argv[2]) {
     case "movie-this":
         movie();
         break;
+    //Spotify
     case "spotify-this-song":
         spotifyThis();
         break;
+    //DWIS
     case "do-what-it-says":
         doWhatItSays();
         break;
+};
+
+// BONUS
+fs.appendFile("log.txt", "\n" + process.argv[2] + " Looked up: " + process.argv[3]), (err) => {
+    if (err)
+        throw error;
+    console.log("Action has been logged!")
 };
